@@ -156,11 +156,7 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-
         <div class="poem-text" id="poemText"></div>
         <div class="poem-meta">
   <span class="poem-style-tag" id="poemStyleTag"></span>
-
-  <div style="display:flex;gap:8px;">
-    <button class="btn-copy" onclick="speakPoem()">🔊 Oxu</button>
-    <button class="btn-copy" id="btnCopy" onclick="copyPoem()">Kopyala</button>
-  </div>
+  <button class="btn-copy" id="btnCopy" onclick="copyPoem()">Kopyala</button>
         </div>
       </div>
     </div>
@@ -213,35 +209,6 @@ function showResult(title,poem,style){document.getElementById('poemTitle').textC
 function hideResult(){document.getElementById('resultSection').classList.remove('visible')}
 function showError(msg){const el=document.getElementById('errorMsg');el.textContent=msg;el.classList.add('visible')}
 function hideError(){document.getElementById('errorMsg').classList.remove('visible')}
-function speakPoem() {
-  const title = document.getElementById('poemTitle').textContent;
-  const poem = document.getElementById('poemText').textContent;
-
-  if (!poem.trim()) {
-    alert('Əvvəl şeir yarat.');
-    return;
-  }
-
-  speechSynthesis.cancel();
-
-  const speech = new SpeechSynthesisUtterance(title + ". " + poem);
-
-  speech.lang = 'az-AZ';
-    const voices = speechSynthesis.getVoices();
-
-// Türk səsi tapmağa çalışır
-const turkishVoice = voices.find(v =>
-  v.lang.includes('tr')
-);
-
-if (turkishVoice) {
-  speech.voice = turkishVoice;
-}
-  speech.rate = 0.9;
-  speech.pitch = 1;
-
-  speechSynthesis.speak(speech);
-                                                } 
 async function copyPoem(){const text=document.getElementById('poemTitle').textContent+'\n\n'+document.getElementById('poemText').textContent;await navigator.clipboard.writeText(text);const btn=document.getElementById('btnCopy');btn.textContent='✓ Kopyalandı';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Kopyala';btn.classList.remove('copied')},2500)}
 document.getElementById('wordsInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey)generatePoem()});
 </script>
