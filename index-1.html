@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Şeir Ustası</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Şeir Ustası">
+<meta name="theme-color" content="#080A14">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#F5C842;--rose:#C96FBF;--night:#080A14}
+body{min-height:100vh;background:var(--night);font-family:'Inter',sans-serif;overflow-x:hidden;color:#e8e0f0}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.35;pointer-events:none;z-index:0;animation:drift 18s ease-in-out infinite alternate}
+.orb-1{width:520px;height:520px;background:radial-gradient(circle,#6B2FA0,transparent 70%);top:-120px;left:-100px}
+.orb-2{width:400px;height:400px;background:radial-gradient(circle,#1E4EA8,transparent 70%);bottom:-80px;right:-80px;animation-delay:-9s}
+.orb-3{width:280px;height:280px;background:radial-gradient(circle,#B04080,transparent 70%);top:40%;left:60%;animation-delay:-4s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.08)}}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:48px 20px 80px}
+header{text-align:center;margin-bottom:48px}
+.brand-label{display:inline-block;font-size:11px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);opacity:.8;margin-bottom:16px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:700;line-height:1.1;background:linear-gradient(135deg,#fff 0%,var(--gold) 55%,var(--rose) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.subtitle{font-size:15px;color:rgba(220,210,240,.55);font-weight:300;letter-spacing:.04em}
+.main-card{width:100%;max-width:760px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:28px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:40px;box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,0 32px 80px rgba(0,0,0,.5);position:relative;overflow:hidden}
+.main-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent)}
+.section-label{font-size:11px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:rgba(245,200,66,.7);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(245,200,66,.25),transparent)}
+.words-input{width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;color:#e8e0f0;font-family:'Inter',sans-serif;font-size:15px;font-weight:300;line-height:1.6;resize:vertical;min-height:100px;outline:none;transition:border-color .3s}
+.words-input::placeholder{color:rgba(200,190,220,.3)}
+.words-input:focus{border-color:rgba(245,200,66,.4)}
+.options-row{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.chip-group{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:7px 16px;border-radius:100px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(220,210,240,.6);font-size:12px;font-weight:500;cursor:pointer;transition:all .25s;user-select:none}
+.chip.active{border-color:var(--gold);color:var(--gold);background:rgba(245,200,66,.12)}
+.btn-generate{margin-top:24px;width:100%;padding:18px;border:none;border-radius:16px;background:linear-gradient(135deg,#8B3FC4,#5A2EA8,#3A1D8C);color:#fff;font-family:'Playfair Display',serif;font-size:17px;font-style:italic;cursor:pointer;transition:transform .2s;box-shadow:0 8px 32px rgba(107,47,160,.4)}
+.btn-generate:hover{transform:translateY(-2px)}
+.btn-generate:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-inner{display:flex;align-items:center;justify-content:center;gap:10px}
+.result-section{display:none}
+.result-section.visible{display:block;animation:fadeUp .6s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.divider{margin:36px 0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent)}
+.poem-card{background:linear-gradient(145deg,rgba(107,47,160,.12),rgba(79,142,247,.06),rgba(201,111,191,.08));border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:36px 40px;position:relative;overflow:hidden}
+.poem-card::before{content:'"';position:absolute;top:-10px;left:16px;font-family:'Playfair Display',serif;font-size:120px;color:rgba(245,200,66,.07);line-height:1;pointer-events:none}
+.poem-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;color:var(--gold);margin-bottom:24px}
+.poem-text{font-family:'Playfair Display',serif;font-size:1.05rem;line-height:1.95;color:rgba(235,225,250,.88);white-space:pre-wrap}
+.poem-meta{margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.poem-style-tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,200,66,.5)}
+.btn-copy{padding:7px 18px;border-radius:100px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(220,210,240,.6);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-copy.copied{color:#7EE8A2;border-color:rgba(126,232,162,.4)}
+.loading-state{text-align:center;padding:48px 0;display:none}
+.loading-state.visible{display:block}
+.loader-ring{width:56px;height:56px;border:2px solid rgba(245,200,66,.1);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'Playfair Display',serif;font-style:italic;color:rgba(220,210,240,.5);font-size:15px}
+.loading-dots::after{content:'.';animation:dots 1.5s steps(4,end) infinite}
+@keyframes dots{0%,100%{content:'.'}33%{content:'..'}66%{content:'...'}}
+.error-msg{display:none;background:rgba(200,60,60,.1);border:1px solid rgba(200,60,60,.25);border-radius:12px;padding:14px 18px;color:#F4A2A2;font-size:14px;margin-top:16px;text-align:center}
+.error-msg.visible{display:block}
+@media(max-width:600px){.main-card{padding:28px 20px}.poem-card{padding:28px 24px}h1{font-size:2rem}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="app">
+  <header>
+    <div class="brand-label">✦ Sözlər · Şeirlər · Hisslər ✦</div>
+    <h1>Şeir Ustası</h1>
+    <p class="subtitle">Sözlərini yaz — şeirinə çevrilsin</p>
+  </header>
+  <div class="main-card">
+    <div class="section-label">Sözlər & Mövzu</div>
+    <textarea class="words-input" id="wordsInput" placeholder="Nə haqqında şeir istəyirsən? Bir neçə söz, hiss, mövzu yaz...&#10;Məsələn: dəniz, köhnə sevgi, yağış, vətən həsrəti" rows="4"></textarea>
+    <div class="options-row">
+      <div>
+        <div class="section-label" style="margin-bottom:10px;font-size:10px">Üslub</div>
+        <div class="chip-group" id="styleGroup">
+          <div class="chip active" data-val="klassik lirik">Lirik</div>
+          <div class="chip" data-val="fəlsəfi">Fəlsəfi</div>
+          <div class="chip" data-val="romantik">Romantik</div>
+          <div class="chip" data-val="kədərli eleji">Eleji</div>
+          <div class="chip" data-val="qəzəl">Qəzəl</div>
+          <div class="chip" data-val="müasir sərbəst">Sərbəst</div>
+        </div>
+      </div>
+    </div>
+    <div class="options-row" style="margin-top:16px">
+      <div>
+        <div class="section-label" style="margin-bottom:10px;font-size:10px">Uzunluq</div>
+        <div class="chip-group" id="lengthGroup">
+          <div class="chip active" data-val="qısa (2 bənd)">Qısa</div>
+          <div class="chip" data-val="orta (4 bənd)">Orta</div>
+          <div class="chip" data-val="uzun (6 bənd)">Uzun</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-generate" id="btnGenerate" onclick="generatePoem()">
+      <span class="btn-inner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L9.5 9.5H2l6 4.5L5.5 21 12 16.5 18.5 21 16 14l6-4.5h-7.5z"/></svg>
+        Şeir Yarat
+      </span>
+    </button>
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="loading-state" id="loadingState">
+      <div class="loader-ring"></div>
+      <div class="loading-text">Sözlər şeirə çevrilir<span class="loading-dots"></span></div>
+    </div>
+    <div class="result-section" id="resultSection">
+      <div class="divider"></div>
+      <div class="section-label">Şeiriniz</div>
+      <div class="poem-card">
+        <div class="poem-title" id="poemTitle"></div>
+        <div class="poem-text" id="poemText"></div>
+        <div class="poem-meta">
+          <span class="poem-style-tag" id="poemStyleTag"></span>
+          <button class="btn-copy" id="btnCopy" onclick="copyPoem()">Kopyala</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const WORKER='https://yellow-grass-baff.hsnhlm849.workers.dev/';
+const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');let stars=[];
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+function initStars(){stars=Array.from({length:160},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.2+.2,alpha:Math.random()*.6+.1,speed:Math.random()*.0006+.0002,phase:Math.random()*Math.PI*2}))}
+function draw(ts){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{const a=s.alpha*(.5+.5*Math.sin(ts*s.speed+s.phase));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,245,200,${a})`;ctx.fill()});requestAnimationFrame(draw)}
+resize();initStars();requestAnimationFrame(draw);
+window.addEventListener('resize',()=>{resize();initStars()});
+document.querySelectorAll('.chip').forEach(c=>{c.addEventListener('click',()=>{c.closest('.chip-group').querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active')})});
+function getActive(id){return document.querySelector('#'+id+' .chip.active')?.dataset.val||''}
+async function generatePoem(){
+  const words=document.getElementById('wordsInput').value.trim();
+  if(!words){showError('Zəhmət olmasa söz yazın.');return}
+  const style=getActive('styleGroup'),length=getActive('lengthGroup');
+  setLoading(true);hideError();hideResult();
+  const prompt=`Sən Azərbaycan dilinin ən gözəl şair ustasısan. Aşağıdakı sözlər/mövzu əsasında Azərbaycanca ${style} üslubunda, ${length} həcmli, çox gözəl hissli bir şeir yaz. Sözlər/Mövzu: "${words}". Cavabını YALNIZ JSON formatında ver: {"title":"Şeirin adı","poem":"Şeirin tam mətni (bəndlər arasında boş sətir olsun)","style":"üslub adı"}`;
+  try{
+    const res=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
+    if(!res.ok)throw new Error('status '+res.status);
+    const data=await res.json();
+    if(data.error)throw new Error(data.error);
+    const raw=data.choices[0].message.content;
+    let parsed;
+    try{const m=raw.replace(/```json|```/g,'').trim().match(/\{[\s\S]*\}/);parsed=JSON.parse(m[0])}
+    catch{parsed={title:'Şeirim',poem:raw,style:style}}
+    showResult(parsed.title,parsed.poem,parsed.style||style);
+  }catch(e){showError('Xəta baş verdi: '+e.message)}
+  finally{setLoading(false)}
+}
+function setLoading(on){document.getElementById('loadingState').classList.toggle('visible',on);document.getElementById('btnGenerate').disabled=on}
+function showResult(title,poem,style){document.getElementById('poemTitle').textContent=title;document.getElementById('poemText').textContent=poem;document.getElementById('poemStyleTag').textContent='✦ '+style;document.getElementById('resultSection').classList.add('visible');document.getElementById('resultSection').scrollIntoView({behavior:'smooth',block:'nearest'})}
+function hideResult(){document.getElementById('resultSection').classList.remove('visible')}
+function showError(msg){const el=document.getElementById('errorMsg');el.textContent=msg;el.classList.add('visible')}
+function hideError(){document.getElementById('errorMsg').classList.remove('visible')}
+async function copyPoem(){const text=document.getElementById('poemTitle').textContent+'\n\n'+document.getElementById('poemText').textContent;await navigator.clipboard.writeText(text);const btn=document.getElementById('btnCopy');btn.textContent='✓ Kopyalandı';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Kopyala';btn.classList.remove('copied')},2500)}
+document.getElementById('wordsInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey)generatePoem()});
+</script>
+</body>
+</html>
