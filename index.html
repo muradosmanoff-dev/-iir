@@ -227,6 +227,16 @@ function speakPoem() {
   const speech = new SpeechSynthesisUtterance(title + ". " + poem);
 
   speech.lang = 'az-AZ';
+    const voices = speechSynthesis.getVoices();
+
+// Türk səsi tapmağa çalışır
+const turkishVoice = voices.find(v =>
+  v.lang.includes('tr')
+);
+
+if (turkishVoice) {
+  speech.voice = turkishVoice;
+}
   speech.rate = 0.9;
   speech.pitch = 1;
 
