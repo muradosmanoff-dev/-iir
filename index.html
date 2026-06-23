@@ -1,38 +1,17 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Əsas SEO -->
-    <title>Şeir Ustası — AI ilə Azərbaycanca Şeir Yaratmaq</title>
-    <meta name="description" content="Pulsuz AI şeir generatoru. İstədiyin sözləri, hissləri və ya mövzunu yaz — dərhal Azərbaycan dilində gözəl, lirik, romantik, fəlsəfi və ya qəzəl şeir yaratsın.">
-    <meta name="keywords" content="şeir yaratmaq, ai şeir generator, azərbaycan şeiri, pulsuz şeir yaz, romantik şeir, lirik şeir, qəzəl yaratmaq, fəlsəfi şeir, şeir generator, ai ilə şeir, şeir yazmaq">
-    
-    <!-- Google verification (əgər varsa buraya qoy) -->
-    <meta name="google-site-verification" content="">
-    
-    <link rel="canonical" href="https://muradosmanoff-dev.github.io/-iir/">
-    
-    <!-- Sosial şəbəkələr üçün -->
-    <meta property="og:title" content="Şeir Ustası — AI ilə Şeir Yarat">
-    <meta property="og:description" content="Sözlərini yaz, AI dərhal Azərbaycanca gözəl şeir yaratsın ✨">
-    <meta property="og:url" content="https://muradosmanoff-dev.github.io/-iir/">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://muradosmanoff-dev.github.io/-iir/ikon.png">
-    <meta property="og:site_name" content="Şeir Ustası">
-    
-    <!-- Digər meta taglər -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Şeir Ustası">
-    <meta name="theme-color" content="#080A14">
-    
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="ikon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Şeir Ustası</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Şeir Ustası">
+<meta name="theme-color" content="#080A14">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="ikon.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--gold:#F5C842;--rose:#C96FBF;--night:#080A14}
 body{min-height:100vh;background:var(--night);font-family:'Inter',sans-serif;overflow-x:hidden;color:#e8e0f0}
@@ -84,7 +63,7 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-
 .error-msg{display:none;background:rgba(200,60,60,.1);border:1px solid rgba(200,60,60,.25);border-radius:12px;padding:14px 18px;color:#F4A2A2;font-size:14px;margin-top:16px;text-align:center}
 .error-msg.visible{display:block}
 @media(max-width:600px){.main-card{padding:28px 20px}.poem-card{padding:28px 24px}h1{font-size:2rem}}
-    </style>
+</style>
 </head>
 <body>
 <canvas id="stars"></canvas>
@@ -96,20 +75,7 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-
     <div class="brand-label">✦ Sözlər · Şeirlər · Hisslər ✦</div>
     <h1>Şeir Ustası</h1>
     <p class="subtitle">Sözlərini yaz — şeirinə çevrilsin</p>
-  </header><!-- SEO üçün əlavə məzmun -->
-  <div style="max-width:760px; width:100%; margin: 40px auto 50px auto; text-align:center; color:rgba(220,210,240,.85); padding:0 10px;">
-    <h2 style="font-family:'Playfair Display',serif; color:#F5C842; margin-bottom:16px; font-size:1.8rem;">
-      Şeir Ustası nədir?
-    </h2>
-    <p style="font-size:15.5px; line-height:1.7; margin-bottom:18px;">
-      Azərbaycan dilində işləyən güclü süni intellekt əsaslı şeir generatorudur. 
-      Sadəcə bir neçə söz, hiss və ya mövzu yazın — AI sizə professional səviyyədə gözəl şeir yaratsın.
-    </p>
-    <p style="font-size:15px; line-height:1.7; margin-bottom:20px;">
-      <strong>İstifadə sahələri:</strong> Romantik şeirlər, sevgililər üçün arzular, doğum günü şeirləri, 
-      vətən həsrəti, kədərli elejilər, qəzəllər, fəlsəfi düşüncələr və s.
-    </p>
-  </div>
+  </header>
   <div class="main-card">
     <div class="section-label">Sözlər & Mövzu</div>
     <textarea class="words-input" id="wordsInput" placeholder="Nə haqqında şeir istəyirsən? Bir neçə söz, hiss, mövzu yaz...&#10;Məsələn: dəniz, köhnə sevgi, yağış, vətən həsrəti" rows="4"></textarea>
@@ -117,13 +83,13 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-
       <div>
         <div class="section-label" style="margin-bottom:10px;font-size:10px">Üslub</div>
         <div class="chip-group" id="styleGroup">
-          <div class="chip active" data-val="klassik lirik">Lirik</div>
+          <div class="chip active" data-val="lirik">Lirik</div>
           <div class="chip" data-val="fəlsəfi">Fəlsəfi</div>
           <div class="chip" data-val="romantik">Romantik</div>
-          <div class="chip" data-val="kədərli eleji">Eleji</div>
+          <div class="chip" data-val="eleji">Eleji</div>
           <div class="chip" data-val="qəzəl">Qəzəl</div>
-          <div class="chip" data-val="müasir sərbəst">Sərbəst</div>
-            <div class="chip" data-val="meyxana">Meyxana</div>
+          <div class="chip" data-val="sərbəst">Sərbəst</div>
+          <div class="chip" data-val="meyxana">Meyxana</div>
         </div>
       </div>
     </div>
@@ -131,9 +97,9 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-
       <div>
         <div class="section-label" style="margin-bottom:10px;font-size:10px">Uzunluq</div>
         <div class="chip-group" id="lengthGroup">
-          <div class="chip active" data-val="qısa (2 bənd)">Qısa</div>
-          <div class="chip" data-val="orta (4 bənd)">Orta</div>
-          <div class="chip" data-val="uzun (6 bənd)">Uzun</div>
+          <div class="chip active" data-val="qisa">Qısa</div>
+          <div class="chip" data-val="orta">Orta</div>
+          <div class="chip" data-val="uzun">Uzun</div>
         </div>
       </div>
     </div>
@@ -155,8 +121,8 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-
         <div class="poem-title" id="poemTitle"></div>
         <div class="poem-text" id="poemText"></div>
         <div class="poem-meta">
-  <span class="poem-style-tag" id="poemStyleTag"></span>
-  <button class="btn-copy" id="btnCopy" onclick="copyPoem()">Kopyala</button>
+          <span class="poem-style-tag" id="poemStyleTag"></span>
+          <button class="btn-copy" id="btnCopy" onclick="copyPoem()">Kopyala</button>
         </div>
       </div>
     </div>
@@ -164,6 +130,39 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-
 </div>
 <script>
 const WORKER='https://yellow-grass-baff.hsnhlm849.workers.dev/';
+
+const PROMPTS = {
+  'lirik': (words, length) => `Sən Azərbaycanın ən böyük şair ustasısan. "${words}" mövzusunda klassik Azərbaycan lirik şeiri yaz. Şeir ${length === 'qisa' ? '2' : length === 'orta' ? '4' : '6'} bənddən ibarət olsun. Hər bənd 4 misradan ibarət olsun. Qafiyə sxemi ABAB və ya AABB olsun. Misralar ahəngdar, ritmik, dərin mənalı olsun. Oxuyan adam heyran qalsın. Azərbaycan dilinin bütün gözəlliyini istifadə et — təşbeh, istiare, metafora olsun. Cavabı YALNIZ JSON formatında ver: {"title":"ad","poem":"mətn","style":"Lirik"}`,
+  
+  'fəlsəfi': (words, length) => `Sən dərin fəlsəfi düşüncəli bir şair ustasısan. "${words}" mövzusunda ${length === 'qisa' ? '2' : length === 'orta' ? '4' : '6'} bəndlik dərin fəlsəfi şeir yaz. Hər misra insan ömrü, zaman, varlıq, həqiqət haqqında düşündürsün. Nizami, Füzuli ruhunda olsun amma müasir dillə. Oxuyan adam "wow" desin. YALNIZ JSON: {"title":"ad","poem":"mətn","style":"Fəlsəfi"}`,
+
+  'romantik': (words, length) => `Sən romantik sevgi şairisin. "${words}" mövzusunda ${length === 'qisa' ? '2' : length === 'orta' ? '4' : '6'} bəndlik atəşli, hissli, romantik sevgi şeiri yaz. Hər söz ürəkdən gəlsin. Sevginin ağrısını, sevinclərini, həsrətini anlat. Misralar qafiyəli, ritmik, melodiyalı olsun. Oxuyan sevgilisini xatırlasın, gözü dolsun. YALNIZ JSON: {"title":"ad","poem":"mətn","style":"Romantik"}`,
+
+  'eleji': (words, length) => `Sən kədər şairisin. "${words}" mövzusunda ${length === 'qisa' ? '2' : length === 'orta' ? '4' : '6'} bəndlik ağır, hüznlü, dərin eleji yaz. Ayrılıq, itki, həsrət, ötüb keçən günlər haqqında. Hər misra ürəyi sıxsın. Qafiyə sxemi ABAB olsun. YALNIZ JSON: {"title":"ad","poem":"mətn","style":"Eleji"}`,
+
+  'qəzəl': (words, length) => `Sən klassik Azərbaycan qəzəl ustasısan. "${words}" mövzusunda ${length === 'qisa' ? '5' : length === 'orta' ? '7' : '9'} beytlik qəzəl yaz. Qəzəlin qaydası: hər beyt 2 misradan ibarətdir. İlk beytin hər iki misrası qafiyəli olur (AA), sonrakı beytlərin yalnız ikinci misrası həmin qafiyəyə uyğun gəlir (xA, xA, xA...). Son beytdə şairin adı və ya "könlüm", "gönlüm" kimi söz olsun. Füzuli, Nəsimi, Xəqani üslubunda — dərin, obrazlı, klassik. YALNIZ JSON: {"title":"ad","poem":"mətn","style":"Qəzəl"}`,
+
+  'sərbəst': (words, length) => `Sən müasir Azərbaycan şairisin. "${words}" mövzusunda ${length === 'qisa' ? '10-15' : length === 'orta' ? '20-25' : '30-35'} misralıq sərbəst şeir yaz. Qafiyə məcburi deyil amma ritm olsun. Güclü obrazlar, canlı metaforalar, modern dil istifadə et. Hər misra güclü olsun. Oxuyan düşünsün. YALNIZ JSON: {"title":"ad","poem":"mətn","style":"Sərbəst"}`,
+
+  'meyxana': (words, length) => `Sən Azərbaycan meyxana ustasısan — Rəşad Dağlı, Balaəli, Əli Mehin kimi. "${words}" mövzusunda ${length === 'qisa' ? '3' : length === 'orta' ? '5' : '7'} bəndlik klassik Azərbaycan meyxanası yaz.
+
+MEYXANA QAYDALARI (mütləq əməl et):
+- Hər bənd 4 misradan ibarətdir
+- Qafiyə sxemi: A/A/A/B (ilk 3 misra eyni qəfiyə, 4-cü fərqli)
+- Növbəti bəndin A qafiyəsi əvvəlki bəndin B qafiyəsi ilə bağlı olur
+- Dil sadə, kəskin, hissli, real həyatdan
+- Ağır, dərin, nəfəs tutan misralar
+- Həyat, sevgi, ayrılıq, kişilik, tale haqqında
+- Son misrada güclü bir nəticə olsun
+
+Nümunə qafiyə quruluşu:
+Bənd 1: ...A / ...A / ...A / ...B
+Bənd 2: ...B / ...B / ...B / ...C
+Bənd 3: ...C / ...C / ...C / ...D
+
+YALNIZ JSON formatında ver: {"title":"ad","poem":"mətn","style":"Meyxana"}`
+};
+
 const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');let stars=[];
 function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
 function initStars(){stars=Array.from({length:160},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.2+.2,alpha:Math.random()*.6+.1,speed:Math.random()*.0006+.0002,phase:Math.random()*Math.PI*2}))}
@@ -172,25 +171,14 @@ resize();initStars();requestAnimationFrame(draw);
 window.addEventListener('resize',()=>{resize();initStars()});
 document.querySelectorAll('.chip').forEach(c=>{c.addEventListener('click',()=>{c.closest('.chip-group').querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active')})});
 function getActive(id){return document.querySelector('#'+id+' .chip.active')?.dataset.val||''}
+
 async function generatePoem(){
   const words=document.getElementById('wordsInput').value.trim();
   if(!words){showError('Zəhmət olmasa söz yazın.');return}
-  const style=getActive('styleGroup'),length=getActive('lengthGroup');
+  const style=getActive('styleGroup');
+  const length=getActive('lengthGroup');
   setLoading(true);hideError();hideResult();
-  const prompt=`Sən Azərbaycanın ən böyük və qəlbə toxunan şairisən. Çox incə, emosional, musiqi kimi axan və mükəmməl qafiyəli şeirlər yazırsan.
-
-Aşağıdakı sözlər/mövzu əsasında Azərbaycanca ${style} üslubunda, ${length} həcmli bir şeir yaz.
-
-Vacib tələblər:
-- Çox dərin, qəlbə toxunan və hissli olsun
-- Gözəl və təbii qafiyələr olsun
-- Dil zəngin, ədəbi və axıcı olsun
-- Əgər "meyxana" seçilibsə, klassik meyxana ritmi və tərzi ilə, güclü qafiyə və atışma üslubunda yaz
-
-Sözlər/Mövzu: "${words}"
-
-Cavabını YALNIZ JSON formatında ver: 
-{"title":"Şeirin adı","poem":"Şeirin tam mətni (bəndlər arasında boş sətir olsun)","style":"üslub adı"}`
+  const prompt = PROMPTS[style] ? PROMPTS[style](words, length) : PROMPTS['lirik'](words, length);
   try{
     const res=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
     if(!res.ok)throw new Error('status '+res.status);
@@ -204,6 +192,7 @@ Cavabını YALNIZ JSON formatında ver:
   }catch(e){showError('Xəta baş verdi: '+e.message)}
   finally{setLoading(false)}
 }
+
 function setLoading(on){document.getElementById('loadingState').classList.toggle('visible',on);document.getElementById('btnGenerate').disabled=on}
 function showResult(title,poem,style){document.getElementById('poemTitle').textContent=title;document.getElementById('poemText').textContent=poem;document.getElementById('poemStyleTag').textContent='✦ '+style;document.getElementById('resultSection').classList.add('visible');document.getElementById('resultSection').scrollIntoView({behavior:'smooth',block:'nearest'})}
 function hideResult(){document.getElementById('resultSection').classList.remove('visible')}
@@ -213,4 +202,4 @@ async function copyPoem(){const text=document.getElementById('poemTitle').textCo
 document.getElementById('wordsInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey)generatePoem()});
 </script>
 </body>
-  </html>
+</html>
