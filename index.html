@@ -1,17 +1,38 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Şeir Ustası</title>
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Şeir Ustası">
-<meta name="theme-color" content="#080A14">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="ikon.png">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Əsas SEO -->
+    <title>Şeir Ustası — AI ilə Azərbaycanca Şeir Yaratmaq</title>
+    <meta name="description" content="Pulsuz AI şeir generatoru. İstədiyin sözləri, hissləri və ya mövzunu yaz — dərhal Azərbaycan dilində gözəl, lirik, romantik, fəlsəfi və ya qəzəl şeir yaratsın.">
+    <meta name="keywords" content="şeir yaratmaq, ai şeir generator, azərbaycan şeiri, pulsuz şeir yaz, romantik şeir, lirik şeir, qəzəl yaratmaq, fəlsəfi şeir, şeir generator, ai ilə şeir, şeir yazmaq">
+    
+    <!-- Google verification (əgər varsa buraya qoy) -->
+    <meta name="google-site-verification" content="">
+    
+    <link rel="canonical" href="https://muradosmanoff-dev.github.io/-iir/">
+    
+    <!-- Sosial şəbəkələr üçün -->
+    <meta property="og:title" content="Şeir Ustası — AI ilə Şeir Yarat">
+    <meta property="og:description" content="Sözlərini yaz, AI dərhal Azərbaycanca gözəl şeir yaratsın ✨">
+    <meta property="og:url" content="https://muradosmanoff-dev.github.io/-iir/">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://muradosmanoff-dev.github.io/-iir/ikon.png">
+    <meta property="og:site_name" content="Şeir Ustası">
+    
+    <!-- Digər meta taglər -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Şeir Ustası">
+    <meta name="theme-color" content="#080A14">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="ikon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--gold:#F5C842;--rose:#C96FBF;--night:#080A14}
 body{min-height:100vh;background:var(--night);font-family:'Inter',sans-serif;overflow-x:hidden;color:#e8e0f0}
@@ -63,7 +84,7 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-
 .error-msg{display:none;background:rgba(200,60,60,.1);border:1px solid rgba(200,60,60,.25);border-radius:12px;padding:14px 18px;color:#F4A2A2;font-size:14px;margin-top:16px;text-align:center}
 .error-msg.visible{display:block}
 @media(max-width:600px){.main-card{padding:28px 20px}.poem-card{padding:28px 24px}h1{font-size:2rem}}
-</style>
+    </style>
 </head>
 <body>
 <canvas id="stars"></canvas>
@@ -142,7 +163,7 @@ async function generatePoem(){
   if(!words){showError('Zəhmət olmasa söz yazın.');return}
   const style=getActive('styleGroup'),length=getActive('lengthGroup');
   setLoading(true);hideError();hideResult();
-  const prompt=`Sən Azərbaycan dilinin ən gözəl şair ustasısan. Aşağıdakı sözlər/mövzu əsasında Azərbaycanca ${style} üslubunda, ${length} həcmli, çox gözəl hissli bir şeir yaz. Sözlər/Mövzu: "${words}". Cavabını YALNIZ JSON formatında ver: {"title":"Şeirin adı","poem":"Şeirin tam mətni (bəndlər arasında boş sətir olsun)","style":"üslub adı"}`;
+  const prompt=`Sən Azərbaycan dilinin ən gözəl şair ustasısan. Aşağıdakı sözlər/mövzu əsasında Azərbaycanca ${style} üslubunda, \( {length} həcmli, çox gözəl hissli bir şeir yaz. Sözlər/Mövzu: " \){words}". Cavabını YALNIZ JSON formatında ver: {"title":"Şeirin adı","poem":"Şeirin tam mətni (bəndlər arasında boş sətir olsun)","style":"üslub adı"}`;
   try{
     const res=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
     if(!res.ok)throw new Error('status '+res.status);
@@ -165,4 +186,4 @@ async function copyPoem(){const text=document.getElementById('poemTitle').textCo
 document.getElementById('wordsInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey)generatePoem()});
 </script>
 </body>
-</html>
+  </html>
