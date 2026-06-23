@@ -155,8 +155,12 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-
         <div class="poem-title" id="poemTitle"></div>
         <div class="poem-text" id="poemText"></div>
         <div class="poem-meta">
-          <span class="poem-style-tag" id="poemStyleTag"></span>
-          <button class="btn-copy" id="btnCopy" onclick="copyPoem()">Kopyala</button>
+  <span class="poem-style-tag" id="poemStyleTag"></span>
+
+  <div style="display:flex;gap:8px;">
+    <button class="btn-copy" onclick="speakPoem()">🔊 Oxu</button>
+    <button class="btn-copy" id="btnCopy" onclick="copyPoem()">Kopyala</button>
+  </div>
         </div>
       </div>
     </div>
