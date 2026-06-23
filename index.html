@@ -190,7 +190,7 @@ Vacib tələblər:
 Sözlər/Mövzu: "${words}"
 
 Cavabını YALNIZ JSON formatında ver: 
-{"title":"Şeirin adı","poem":"Şeirin tam mətni (bəndlər arasında boş sətir olsun)","style":"üslub adı"}`; JSON formatında ver: {"title":"Şeirin adı","poem":"Şeirin tam mətni (bəndlər arasında boş sətir olsun)","style":"üslub adı"}`;
+{"title":"Şeirin adı","poem":"Şeirin tam mətni (bəndlər arasında boş sətir olsun)","style":"üslub adı"}`
   try{
     const res=await fetch(WORKER,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}]})});
     if(!res.ok)throw new Error('status '+res.status);
