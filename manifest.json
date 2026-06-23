@@ -3,20 +3,23 @@
   "short_name": "Şeir Ustası",
   "description": "Sözlərdən şeirə",
   "start_url": "/--iir/",
+  "scope": "/-iir/",
   "display": "standalone",
   "background_color": "#080A14",
   "theme_color": "#080A14",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "ikon.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "icon.png",
+      "src": "ikon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
