@@ -1,0 +1,395 @@
+import { useState, useEffect } from "react";
+
+const POEM_COST = 5;
+const FREE_TOKENS = 20;
+
+const PACKAGES = [
+  { id: 1, tokens: 50, price: "1 AZN", label: "Başlanğıc" },
+  { id: 2, tokens: 150, price: "2.50 AZN", label: "Məşhur ⭐", popular: true },
+  { id: 3, tokens: 500, price: "5 AZN", label: "Pro" },
+];
+
+const STYLES = ["Lirik", "Fəlsəfi", "Romantik", "Eleji", "Qəzəl", "Sərbəst", "Meyxana"];
+const LENGTHS = ["Qısa", "Orta", "Uzun"];
+
+async function callClaude(input, style, length) {
+  const lengthMap = { Qısa: "4-8 misra", Orta: "8-16 misra", Uzun: "16-24 misra" };
+  const resp = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 1000,
+      messages: [{
+        role: "user",
+        content: `Sən professional Azərbaycan şairiсən. Aşağıdakı mövzu əsasında ${style.toLowerCase()} üslubunda, ${lengthMap[length]} həcmli bir şeir yaz. YALNIZ şeiri yaz, heç bir izahat, başlıq və ya əlavə mətn yazma.\n\nMövzu: ${input}`
+      }]
+    })
+  });
+  const data = await resp.json();
+  return data.content?.[0]?.text || "Şeir yaradıla bilmədi.";
+}
+
+export default function App() {
+  const [tokens, setTokens] = useState(FREE_TOKENS);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [input, setInput] = useState("");
+  const [style, setStyle] = useState("Lirik");
+  const [length, setLength] = useState("Orta");
+  const [poem, setPoem] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [bought, setBought] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowWelcome(false), 3500);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleGenerate = async () => {
+    if (!input.trim()) { setErr("Mövzu daxil edin."); return; }
+    if (tokens < POEM_COST) { setShowModal(true); return; }
+    setErr(""); setLoading(true); setPoem("");
+    try {
+      const result = await callClaude(input, style, length);
+      setPoem(result);
+      setTokens(t => t - POEM_COST);
+    } catch {
+      setErr("Xəta baş verdi. Yenidən cəhd edin.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBuy = (pkg) => {
+    setTokens(t => t + pkg.tokens);
+    setBought(pkg);
+    setShowModal(false);
+    setTimeout(() => setBought(null), 3000);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(poem);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const tokenColor = tokens <= 5 ? "#ef4444" : tokens <= 10 ? "#f97316" : "#fbbf24";
+
+  return (
+    <div style={{
+      minHeight: "100vh", background: "#080A14",
+      fontFamily: "'Georgia', serif", color: "#e2d9f3",
+      display: "flex", flexDirection: "column", alignItems: "center",
+      padding: "0 16px 60px"
+    }}>
+      {/* Welcome Banner */}
+      {showWelcome && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "rgba(8,10,20,0.97)", zIndex: 100,
+          display: "flex", flexDirection: "column", alignItems: "center",
+          justifyContent: "center", animation: "fadeIn 0.5s ease"
+        }}>
+          <div style={{ fontSize: 64, marginBottom: 16 }}>🎁</div>
+          <div style={{ fontSize: 28, fontWeight: "bold", color: "#fbbf24", marginBottom: 8 }}>
+            Xoş gəldiniz!
+          </div>
+          <div style={{ fontSize: 18, color: "#c4b5fd", textAlign: "center", maxWidth: 320 }}>
+            Sizə <span style={{ color: "#fbbf24", fontWeight: "bold" }}>20 pulsuz jeton</span> hədiyyə edildi!
+          </div>
+          <div style={{ marginTop: 12, fontSize: 14, color: "#6b7280" }}>
+            Hər şeir <span style={{ color: "#fbbf24" }}>5 jeton</span> ödəyir
+          </div>
+        </div>
+      )}
+
+      {/* Buy Success */}
+      {bought && (
+        <div style={{
+          position: "fixed", top: 24, right: 24, zIndex: 99,
+          background: "#14532d", border: "1px solid #22c55e",
+          borderRadius: 12, padding: "14px 20px",
+          color: "#86efac", fontSize: 15,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.5)"
+        }}>
+          ✓ {bought.tokens} jeton hesabınıza əlavə edildi!
+        </div>
+      )}
+
+      {/* Header */}
+      <div style={{ width: "100%", maxWidth: 680, paddingTop: 28, paddingBottom: 8 }}>
+        <div style={{
+          display: "flex", justifyContent: "space-between",
+          alignItems: "center", marginBottom: 32
+        }}>
+          <div>
+            <div style={{ fontSize: 11, letterSpacing: 4, color: "#6b7280", marginBottom: 4 }}>
+              ✦ SÖZLƏR · ŞEİRLƏR · HİSSLƏR ✦
+            </div>
+            <div style={{ fontSize: 26, fontWeight: "bold", color: "#f3e8ff" }}>
+              Şeir Ustası
+            </div>
+          </div>
+
+          {/* Token Display */}
+          <div
+            onClick={() => setShowModal(true)}
+            style={{
+              display: "flex", alignItems: "center", gap: 8,
+              background: "rgba(251,191,36,0.08)",
+              border: `1.5px solid ${tokenColor}33`,
+              borderRadius: 50, padding: "8px 18px",
+              cursor: "pointer", transition: "all 0.2s",
+              userSelect: "none"
+            }}
+            title="Jeton əlavə et"
+          >
+            <span style={{ fontSize: 20 }}>🪙</span>
+            <span style={{ fontSize: 20, fontWeight: "bold", color: tokenColor, minWidth: 24 }}>
+              {tokens}
+            </span>
+            <span style={{ fontSize: 12, color: "#9ca3af" }}>jeton</span>
+            {tokens < POEM_COST && (
+              <span style={{ fontSize: 12, color: "#ef4444", fontWeight: "bold" }}>
+                ⚠
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Cost hint */}
+        <div style={{
+          textAlign: "center", fontSize: 13, color: "#4b5563",
+          marginBottom: 24, letterSpacing: 1
+        }}>
+          Hər şeir = <span style={{ color: "#fbbf24" }}>5 🪙</span> &nbsp;·&nbsp;
+          Qalan: <span style={{ color: tokenColor, fontWeight: "bold" }}>{tokens}</span> jeton
+          {tokens >= POEM_COST && (
+            <span style={{ color: "#6b7280" }}> ({Math.floor(tokens / POEM_COST)} şeir)</span>
+          )}
+        </div>
+
+        {/* Input */}
+        <textarea
+          value={input}
+          onChange={e => { setInput(e.target.value); setErr(""); }}
+          placeholder="Sözlər, hisslər, mövzu yazın... (məs. ayrılıq kədəri, payız yağışı, ilk sevgi)"
+          rows={3}
+          style={{
+            width: "100%", background: "#0f1120",
+            border: "1.5px solid #1e2035", borderRadius: 12,
+            padding: "14px 16px", color: "#e2d9f3",
+            fontSize: 15, resize: "none", outline: "none",
+            fontFamily: "'Georgia', serif", boxSizing: "border-box",
+            lineHeight: 1.6
+          }}
+          onFocus={e => e.target.style.borderColor = "#7c3aed"}
+          onBlur={e => e.target.style.borderColor = "#1e2035"}
+        />
+
+        {/* Style & Length */}
+        <div style={{ display: "flex", gap: 12, marginTop: 12, flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: 200 }}>
+            <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 6, letterSpacing: 1 }}>
+              ÜSLUB
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+              {STYLES.map(s => (
+                <button key={s} onClick={() => setStyle(s)} style={{
+                  padding: "5px 13px", borderRadius: 20, fontSize: 13,
+                  border: style === s ? "1.5px solid #7c3aed" : "1.5px solid #1e2035",
+                  background: style === s ? "#1e1040" : "transparent",
+                  color: style === s ? "#c4b5fd" : "#6b7280",
+                  cursor: "pointer", transition: "all 0.15s"
+                }}>{s}</button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 6, letterSpacing: 1 }}>
+              UZUNLUQ
+            </div>
+            <div style={{ display: "flex", gap: 6 }}>
+              {LENGTHS.map(l => (
+                <button key={l} onClick={() => setLength(l)} style={{
+                  padding: "5px 13px", borderRadius: 20, fontSize: 13,
+                  border: length === l ? "1.5px solid #7c3aed" : "1.5px solid #1e2035",
+                  background: length === l ? "#1e1040" : "transparent",
+                  color: length === l ? "#c4b5fd" : "#6b7280",
+                  cursor: "pointer", transition: "all 0.15s"
+                }}>{l}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Error */}
+        {err && (
+          <div style={{ marginTop: 10, color: "#f87171", fontSize: 13 }}>⚠ {err}</div>
+        )}
+
+        {/* Generate Button */}
+        <button
+          onClick={handleGenerate}
+          disabled={loading}
+          style={{
+            marginTop: 16, width: "100%", padding: "14px",
+            background: loading ? "#1e1040" : tokens < POEM_COST
+              ? "linear-gradient(135deg, #7f1d1d, #991b1b)"
+              : "linear-gradient(135deg, #4c1d95, #7c3aed)",
+            border: "none", borderRadius: 12,
+            color: tokens < POEM_COST ? "#fca5a5" : "#f3e8ff",
+            fontSize: 16, fontWeight: "bold",
+            cursor: loading ? "not-allowed" : "pointer",
+            transition: "all 0.2s", fontFamily: "'Georgia', serif",
+            letterSpacing: 1
+          }}
+        >
+          {loading ? "✦ Şeir yazılır..." :
+           tokens < POEM_COST ? "🪙 Jeton almaq lazımdır" :
+           `✦ Şeir Yarat (5 🪙)`}
+        </button>
+
+        {/* Poem Output */}
+        {(poem || loading) && (
+          <div style={{
+            marginTop: 28, background: "#0c0e1e",
+            border: "1px solid #1e2035", borderRadius: 16,
+            padding: "28px 24px", position: "relative"
+          }}>
+            <div style={{
+              fontSize: 11, letterSpacing: 3, color: "#4b5563",
+              marginBottom: 20, textAlign: "center"
+            }}>— ŞEİRİNİZ —</div>
+
+            {loading ? (
+              <div style={{ textAlign: "center", color: "#6b7280", padding: "20px 0" }}>
+                <div style={{ fontSize: 32, marginBottom: 12, animation: "pulse 1.5s infinite" }}>✦</div>
+                <div>Şeir yaradılır...</div>
+              </div>
+            ) : (
+              <>
+                <div style={{
+                  whiteSpace: "pre-wrap", lineHeight: 2.1,
+                  fontSize: 16, color: "#e2d9f3",
+                  textAlign: "center", fontStyle: "italic"
+                }}>
+                  {poem}
+                </div>
+                <button
+                  onClick={handleCopy}
+                  style={{
+                    marginTop: 20, display: "block",
+                    marginLeft: "auto", marginRight: "auto",
+                    padding: "8px 24px",
+                    background: "transparent",
+                    border: "1px solid #1e2035",
+                    borderRadius: 8, color: "#6b7280",
+                    fontSize: 13, cursor: "pointer",
+                    transition: "all 0.15s"
+                  }}
+                >
+                  {copied ? "✓ Kopyalandı" : "Kopyala"}
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Payment Modal */}
+      {showModal && (
+        <div
+          onClick={() => setShowModal(false)}
+          style={{
+            position: "fixed", inset: 0,
+            background: "rgba(0,0,0,0.85)", zIndex: 50,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: 16
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: "#0c0e1e", border: "1px solid #1e2035",
+              borderRadius: 20, padding: "32px 28px",
+              maxWidth: 420, width: "100%",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.8)"
+            }}
+          >
+            <div style={{ textAlign: "center", marginBottom: 28 }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>🪙</div>
+              <div style={{ fontSize: 22, fontWeight: "bold", color: "#f3e8ff", marginBottom: 8 }}>
+                Jeton Əlavə Et
+              </div>
+              <div style={{ fontSize: 14, color: "#6b7280" }}>
+                Hər şeir <span style={{ color: "#fbbf24" }}>5 jeton</span> tələb edir
+              </div>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {PACKAGES.map(pkg => (
+                <button
+                  key={pkg.id}
+                  onClick={() => handleBuy(pkg)}
+                  style={{
+                    padding: "16px 20px",
+                    background: pkg.popular ? "linear-gradient(135deg, #1e1040, #2d1b69)" : "#0f1120",
+                    border: pkg.popular ? "1.5px solid #7c3aed" : "1.5px solid #1e2035",
+                    borderRadius: 12,
+                    display: "flex", justifyContent: "space-between", alignItems: "center",
+                    cursor: "pointer", transition: "all 0.2s",
+                    color: "#e2d9f3", fontFamily: "'Georgia', serif"
+                  }}
+                >
+                  <div style={{ textAlign: "left" }}>
+                    <div style={{ fontSize: 15, fontWeight: "bold", color: "#f3e8ff" }}>
+                      {pkg.tokens} Jeton
+                    </div>
+                    <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
+                      {pkg.label} · {Math.floor(pkg.tokens / POEM_COST)} şeir
+                    </div>
+                  </div>
+                  <div style={{
+                    fontSize: 18, fontWeight: "bold",
+                    color: pkg.popular ? "#c4b5fd" : "#9ca3af"
+                  }}>
+                    {pkg.price}
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div style={{ marginTop: 20, textAlign: "center", fontSize: 12, color: "#374151" }}>
+              Ödəniş təhlükəsiz şəkildə həyata keçirilir
+            </div>
+            <button
+              onClick={() => setShowModal(false)}
+              style={{
+                marginTop: 16, width: "100%", padding: "10px",
+                background: "transparent", border: "none",
+                color: "#4b5563", cursor: "pointer", fontSize: 14
+              }}
+            >
+              Ləğv et
+            </button>
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+        @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.4 } }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        textarea::placeholder { color: #374151; }
+        button:hover { opacity: 0.9; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #080A14; }
+        ::-webkit-scrollbar-thumb { background: #1e2035; border-radius: 2px; }
+      `}</style>
+    </div>
+  );
+}
